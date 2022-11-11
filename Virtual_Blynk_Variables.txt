@@ -1,0 +1,15 @@
+V0 - Actual Temperature
+V1 - Actual Humidity
+V2 - Damper Position
+V3 - 
+V4 - Setpoint
+V5 - P Gain
+V6 - I Gain
+V7 - Home Interval
+V8 - D Gain
+V9 - Add Firewood Timer Interval
+V10 - Add Firewood Notification Interval
+V11 - Firewood Notification on/off
+V12 - Add Firewood time indicator - bridge
+V13 - Max Damper Output
+V14 - Firewood needs added (1/0) - bridge
