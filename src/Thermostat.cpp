@@ -1,3 +1,7 @@
+#define BLYNK_TEMPLATE_ID "TMPLLLP4q0VX"
+#define BLYNK_DEVICE_NAME "WoodstoveThermostat"
+#define BLYNK_AUTH_TOKEN "rXIt7yxsC1lhZh8VYo_JzcNMJFTLKn-k"
+
 #include <Arduino.h>
 #include <ESP8266WiFi.h>          //https://github.com/esp8266/Arduino
 #include <ESP8266HTTPClient.h>
@@ -39,9 +43,9 @@ const int httpsPort = 443;
 
 #include <BlynkSimpleEsp8266.h>
 
-char auth[] = "f11aca9b143a4f65abfa450369e8ff4c";
-char temp_auth[] = "b41c806b93a74d558a2cbcc61c82b04a";
-WidgetBridge Bridge_to_LCD(V24);
+// char auth[] = "f11aca9b143a4f65abfa450369e8ff4c";
+// char temp_auth[] = "b41c806b93a74d558a2cbcc61c82b04a";
+// WidgetBridge Bridge_to_LCD(V24);
 BlynkTimer Timer;
 
 // *************************************************************************************
@@ -122,7 +126,7 @@ int reset_button_pin = D7;
 
 BLYNK_CONNECTED() {
   Blynk.syncAll();
-  Bridge_to_LCD.setAuthToken(temp_auth);
+  // Bridge_to_LCD.setAuthToken(temp_auth);
 }
 
 void setup() {
@@ -146,10 +150,12 @@ void setup() {
   //turn the PID on
   myPID.SetMode(AUTOMATIC);
 
-  Blynk.begin(auth, wifi_ssid, wifi_pass);
+  // Blynk.begin(BLYNK_AUTH_TOKEN, wifi_ssid, wifi_pass, IPAddress(159,65,55,83), 80); // use blynk.cloud IP address, use port 80 or 8080
+  Blynk.begin(BLYNK_AUTH_TOKEN, wifi_ssid, wifi_pass, IPAddress(64,225,16,22), 8080); // use IP address of blynk.cloud, use port 80
 
   OTA_Functions();
-  Bridge_to_LCD.virtualWrite(V4, _setpoint);
+  // Bridge_to_LCD.virtualWrite(V4, _setpoint);
+  Blynk.virtualWrite(V4, _setpoint);
   Blynk.virtualWrite(V2, current_damper_pos);
 }
 

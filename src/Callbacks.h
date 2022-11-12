@@ -45,7 +45,8 @@ BLYNK_WRITE(V4)
   _setpoint = param.asLong();
   Serial.print("Temperature Set Point is: ");
   Serial.println(_setpoint);
-  Bridge_to_LCD.virtualWrite(V4, _setpoint);
+  // Bridge_to_LCD.virtualWrite(V4, _setpoint);
+  Blynk.virtualWrite(V4, _setpoint);
 }
 
 // Callback for each P Gain Update
@@ -101,7 +102,7 @@ BLYNK_WRITE(V11)
 BLYNK_READ(V12)
 {
   Blynk.virtualWrite(V12, firewood_needed_time);
-  Bridge_to_LCD.virtualWrite(V12, firewood_needed_time);
+  // Bridge_to_LCD.virtualWrite(V12, firewood_needed_time);
 }
 
 // Callback to set the maximum damper output
