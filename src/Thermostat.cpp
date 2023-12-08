@@ -1,5 +1,5 @@
 #define BLYNK_TEMPLATE_ID "TMPLLLP4q0VX"
-#define BLYNK_DEVICE_NAME "WoodstoveThermostat"
+#define BLYNK_TEMPLATE_NAME "Home Automation"
 #define BLYNK_AUTH_TOKEN "rXIt7yxsC1lhZh8VYo_JzcNMJFTLKn-k"
 
 #include <Arduino.h>
@@ -46,7 +46,7 @@ const int httpsPort = 443;
 // char auth[] = "f11aca9b143a4f65abfa450369e8ff4c";
 // char temp_auth[] = "b41c806b93a74d558a2cbcc61c82b04a";
 // WidgetBridge Bridge_to_LCD(V24);
-BlynkTimer Timer;
+BlynkTimer Timer; // can schedule up to 16 tasks
 
 // *************************************************************************************
 
@@ -125,8 +125,7 @@ int reset_button_pin = D7;
 #include "functions.h"
 
 BLYNK_CONNECTED() {
-  Blynk.syncAll();
-  // Bridge_to_LCD.setAuthToken(temp_auth);
+  syncPins();
 }
 
 void setup() {
@@ -151,12 +150,15 @@ void setup() {
   myPID.SetMode(AUTOMATIC);
 
   // Blynk.begin(BLYNK_AUTH_TOKEN, wifi_ssid, wifi_pass, IPAddress(159,65,55,83), 80); // use blynk.cloud IP address, use port 80 or 8080
-  Blynk.begin(BLYNK_AUTH_TOKEN, wifi_ssid, wifi_pass, IPAddress(64,225,16,22), 8080); // use IP address of blynk.cloud, use port 80
+  // Blynk.begin(BLYNK_AUTH_TOKEN, wifi_ssid, wifi_pass, IPAddress(64,225,16,22), 8080); // use IP address of blynk.cloud, use port 80
+  blynk_setup();
+  printWifiStatus();
 
   OTA_Functions();
-  // Bridge_to_LCD.virtualWrite(V4, _setpoint);
-  Blynk.virtualWrite(V4, _setpoint);
+  // Blynk.virtualWrite(V4, _setpoint);
   Blynk.virtualWrite(V2, current_damper_pos);
+
+  Timer.setInterval(1000L, syncPins);
 }
 
 
@@ -167,20 +169,9 @@ void loop() {
   myPID.Compute();
   Input = temp;
   Setpoint = _setpoint;
+  Timer.run();
   
-  if (!WiFi.isConnected()) {    // changed from !Blynk.connected()
-    Serial.println("Wifi Disconnected");
-    Off.Update();
-    // enable_stepper();
-    // home_stepper();
-    // disable_stepper();
-    // Blynk.virtualWrite(V2, 0);
-    // Try to reconnect to preconfigured WiFi indefinitely (restarts module every 8s to refresh)
-    ConnectWifi();
-    // first_home = true;
-  } else {
-    breathe.Update();
-  }
+  manageBlynkConnection2();
 
   CheckButton();
   SafetyCheck();

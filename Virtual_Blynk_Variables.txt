@@ -1,10 +1,10 @@
-Datastreams are exclusive to device and do not travel across templates.  Explicit automation device_forwarding needs to be setup for each bridge in both directions of communication.
+1 Datastream for each parameter
 
-V0 - Actual Temperature - app & bridge - Woodstove
+V0 - Actual Temperature
 V1 - Actual Humidity
 V2 - Damper Position
 V3 - Home Error
-V4 - Setpoint - app & bridge - woodstove
+V4 - Setpoint
 V5 - P Gain
 V6 - I Gain
 V7 - Home Interval
@@ -12,12 +12,6 @@ V8 - D Gain
 V9 - Add Firewood Timer Interval
 V10 - Add Firewood Notification Interval
 V11 - Firewood Notification on/off
-V12 - Add Firewood time indicator - bridge - woodstove
+V12 - Add Firewood time indicator
 V13 - Max Damper Output
-V14 - Firewood needs added (1/0) - bridge - woodstove
-
-V15 - Actual Temperature - LCD
-V16 - Setpoint - LCD
-V17 - Add Firewood time indicator - LCD
-V18 - Firewood needs added (1/0) - LCD
-
+V14 - Firewood needs added (1/0)

@@ -1,3 +1,15 @@
+void blynk_setup() {
+  // Setup WiFi network
+  // WiFi.config(device_ip, gateway_ip, subnet_mask);
+  // WiFi.begin(ssid, pass);
+
+  // Setup Blynk
+  // Blynk.config(BLYNK_AUTH_TOKEN, "ny3.blynk.cloud", 80);
+  Blynk.begin(BLYNK_AUTH_TOKEN, wifi_ssid, wifi_pass, "blynk.cloud", 80);
+  while (Blynk.connect() == false) {
+    Off.Update();
+  }
+}
 
 void printWifiStatus() {
   // print the SSID of the network you're attached to:
@@ -39,6 +51,18 @@ void ConnectWifi() {
   Serial.println("\nConnected to wifi");
   printWifiStatus();
 }
+
+
+void manageBlynkConnection2() {
+  if (!WiFi.isConnected()) {    // changed from !Blynk.connected()
+    Serial.println("Wifi Disconnected");
+    ConnectWifi();
+    Off.Update();
+  } else {
+    breathe.Update();
+  }
+}
+
 
 void TriggerIFTTT(String key, String event_name) {
   //https://maker.ifttt.com/trigger/smoke_detected/with/key/ZOl-kiJkYQGJKLrC6TNHOjh3JOxtHXHL9ia7agmNjc
@@ -84,14 +108,12 @@ void AddFirewood()
         firewood_print_timer = millis();
         if (firewood_notifications == 1) {
           // Blynk.notify("Woodstove has needed firewood added for " + String((currenttime - add_firewood_timer)/60000) + " minutes.");
-          // Bridge_to_LCD.virtualWrite(V14, 1); // Needs firewood
           Blynk.virtualWrite(V14, 1);
           last_temp = temp;
         }
       }
     } else {
       firewood_needed_time = 0;
-      // Bridge_to_LCD.virtualWrite(V14, 0);
       Blynk.virtualWrite(V14, 0);
     }
   }
@@ -100,7 +122,6 @@ void AddFirewood()
     firewood_needed_time = 0;
     firewood_print_timer = 0;
     last_temp = _setpoint;
-    // Bridge_to_LCD.virtualWrite(V14, 0);
     Blynk.virtualWrite(V14, 0);
   }
 }
